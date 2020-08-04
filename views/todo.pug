@@ -1,0 +1,62 @@
+extends layouts.pug
+
+block content
+    .col-12
+        hr
+        h1 
+          Left TODO LIST APP
+        hr
+        hr
+    .col-12
+      form(action='/' method="POST")
+        .row
+          .col
+            label(for = 'name') New task
+            input(id = 'name' type='text' class="form-control mb-3" name="name" placeholder="Task")
+          .col
+            label(for = 'des') New description
+            input(id='des' type='text' class="form-control mb-3" name="description" placeholder="Description")
+          .col
+              label(for = 'img') New image
+              input(type='file', name='img')
+
+          button(type="submit" class="btn btn-primary") Send
+
+    .col-12
+      hr
+      h3 Data List
+      table(class="table table-borderless")
+          tr
+            td No
+            td#nama Todo
+            td#des Description
+            td#img Image
+            td#status Status 
+            td#editstatus Status
+            td#aksi Delete
+        
+          each to,i in todo
+            .row
+              tr
+                td= i + 1
+                .col-3
+                  td=to.name
+                .col-3
+                  td=to.description
+                .col-2
+                  td=to.img
+                .col-2
+                  if to.status == false 
+                    td= "Undone"
+                    td
+                      a(href=`/${to._id}/done` role="button")
+                        i.fas.fa-check-circle
+                  else
+                    td= "Done"
+                    td
+                      a(href=`/${to._id}/undone` role="button")
+                        i.fas.fa-undo
+                  td
+                    span  
+                    a(href=`/${to._id}/del` role="button")
+                      i.fas.fa-trash-alt
