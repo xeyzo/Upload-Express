@@ -5,14 +5,21 @@ const todoModel = require('./models/todoModel')
 const bodyParser = require("body-parser")
 const app = express()
 const port = 3000
+const fs = require('fs');
+const multer = require('multer');
+const uploadsMiddleware = require('./middleware/uploads');
+const UserControllers = require('./controllers/users');
+const router = express.Router();
+
+
+
 
 
 app.set("view engine", "pug");
 app.use(express.static("public"));
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
 
 const error = (error, result) => {
     console.log(error, result);
@@ -21,6 +28,8 @@ const error = (error, result) => {
 const getTodo = async () => {
     return await todoModel.find({});
 }
+
+router.post("/", uploadsMiddleware.single("img"), UserControllers.photoUpload);
 
 
 app.get('/', async (req, res) => {
